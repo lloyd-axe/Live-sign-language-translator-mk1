@@ -3,7 +3,7 @@ from keras.models import load_model
 
 test = ASLT()
 
-model = load_model('actions.h5')
+model = load_model('test_model.h5')
 
 actions = ['hello', 'thanks', 'i love you']
 
