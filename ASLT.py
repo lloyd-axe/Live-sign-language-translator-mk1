@@ -11,39 +11,44 @@ class ASLT: #ASL Translator
     def run(self, 
             model, 
             actions,
-            isDraw = [True, True, True], threshold = 0):
+            isDraw = [True, True, True], 
+            threshold = 0, 
+            interval = 10):
         cap = cv.VideoCapture(0)
         sequence = []
         sentence = []
         if threshold == 0:
             threshold = ((1/(len(actions))) * (len(actions) - 1))*0.9
-        pred = np.zeros(1*3)
         with self.holistic.Holistic(
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5) as holistic_model:
+
+            i = 0 #interval count
             while cap.isOpened():
                 isTrue, frame = cap.read()
+                if not isTrue:
+                    break
                 results = self.detect(frame, holistic_model) #get landmarks in frame
                 self.drawLandmarks(frame, results, isDraw[0], isDraw[1], isDraw[2])               
                 keyPoints = self.extractKeypoints(results)
                 sequence.insert(0, keyPoints)
-                sequence = sequence[:30] #limit to 30
-                
-                #predict
-                if len(sequence) == 30:
-                    pred = model.predict(np.expand_dims(sequence, axis=0))[0]
-                    
-                #VISUALIZE
-                if pred[np.argmax(pred)] > threshold:
-                    action = actions[np.argmax(pred)]
-                    if len(sentence) > 0:
-                        if action != sentence[-1]:
-                            sentence.append(action)
-                    else:
-                        sentence.append(action)
+                sequence = sequence[:interval] 
+                i += 1
+                if i > interval:
+                    i = 0
+                    pred = model.predict(np.array(sequence))[0]
 
-                if len(sentence) > 5:
-                    sentence = sentence[-5:]
+                    #VISUALIZE
+                    if pred[np.argmax(pred)] > threshold:
+                        action = actions[np.argmax(pred)]
+                        if len(sentence) > 0:
+                            if action != sentence[-1]:
+                                sentence.append(action)
+                        else:
+                            sentence.append(action)
+
+                    if len(sentence) > 5:
+                        sentence = sentence[-5:]
                     
                 cv.putText(frame,
                            ' '.join(sentence),
@@ -55,7 +60,7 @@ class ASLT: #ASL Translator
                            cv.LINE_AA)
                 
                 cv.imshow('ASL Translate', frame)
-                if cv.waitKey(10) & 0xFF == ord('q'):
+                if cv.waitKey(1) & 0xFF == ord('q'):
                     break
             cap.release()
             cv.destroyAllWindows()      
@@ -90,7 +95,6 @@ class ASLT: #ASL Translator
     def extractKeypoints(self,
                           results):
         pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten() if results.pose_landmarks else np.zeros(132*4)
-        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark]).flatten() if results.face_landmarks else np.zeros(468*3)
         lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten() if results.left_hand_landmarks else np.zeros(21*3)
         rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten() if results.right_hand_landmarks else np.zeros(21*3)
-        return np.concatenate([pose, face, lh, rh])
+        return np.concatenate([pose, lh, rh])

@@ -3,8 +3,9 @@ from keras.models import load_model
 
 test = ASLT()
 
-model = load_model('test_model.h5')
+model = load_model('GIT//model.h5')
 
-actions = ['hello', 'thanks', 'i love you']
+actions = ['hello', 'yes', 'no', 'thanks', 'iloveyou', 'xoxo']
 
-test.run(model, actions, [True, True, True])
+test.run(model, actions, [False, False, False], threshold=0.85)
+
