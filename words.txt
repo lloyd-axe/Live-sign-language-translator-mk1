@@ -1,6 +1,10 @@
+bye
+good
 hello
-yes
+i
 no
-thanks
-iloveyou
-xoxo
+read
+test
+thankyou
+this
+yes
