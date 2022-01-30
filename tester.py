@@ -1,11 +1,6 @@
-from ASLT import ASLT
-from keras.models import load_model
+from ASLT import ASLTranslator
 
-test = ASLT()
-
-model = load_model('GIT//model.h5')
-
-actions = ['hello', 'yes', 'no', 'thanks', 'iloveyou', 'xoxo']
-
-test.run(model, actions, [False, False, False], threshold=0.85)
-
+with open('words.txt') as file:
+    words = [line.rstrip() for line in file]
+aslt = ASLTranslator('model.h5', words)
+aslt.RunVideo(threshold = 0.7, draw=[False, False, True, True])
