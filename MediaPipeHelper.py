@@ -14,14 +14,17 @@ class Tracker:
             min_detection_confidence = detectConf, 
             min_tracking_confidence = trackingConf)
         
-    #Detection
-    def Detect(
+    #Detection - returns mediapipe holistic model landmarks
+    def Detect( 
         self, 
         frame, 
         color = cv.COLOR_BGR2RGB):
         return self.holistic_model.process(cv.cvtColor(frame, color))
     
-    def GetPositions(self, results):
+    #Reformat holistic model landmarks into a dictionary for easy access
+    def GetPositions(
+        self, 
+        results):
         landmarks = {'pose': [], 'face': [], 'left': [], 'right': []}
         landmarks['pose'] = [[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark] if results.pose_landmarks else np.zeros((33,4))
         landmarks['face'] = [[res.x, res.y, res.z] for res in results.face_landmarks.landmark] if results.face_landmarks else np.zeros((468,3))
@@ -29,10 +32,15 @@ class Tracker:
         landmarks['right'] = [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark] if results.right_hand_landmarks else np.zeros((21,3))
         return landmarks
     
-    def GetKeypointsData(self, results, noFace = False):
+    #Returns a flat array of specified keypoints from landmarks
+    def GetKeypointsData(self, results, noFace = False, noPose = False, posePoints = []):
         landmarks = self.GetPositions(results)
         if noFace:
             landmarks.pop('face')
+        if noPose:
+            landmarks.pop('pose')
+        if posePoints != []:
+            landmarks['pose'] = [landmarks['pose'][p] for p in posePoints]
         return np.concatenate([np.array(part).flatten() for part in landmarks.values()])
     
     #VISUALS
