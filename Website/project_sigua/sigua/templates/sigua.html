@@ -1,0 +1,59 @@
+{% load static %}
+<html>
+  <head>
+    <title>Project Sigua</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Demo for Live Sign Language Translator project using deep learning">
+    <meta name="keywords" content="ASL, Sign Language, Neural Network, Deep Learning, Python, TensorFlow, MediaPipe">
+    <meta name="author" content="Lloyd Acha">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" 
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      $( document ).ready(function() {
+        setInterval(function(){
+          $.getJSON('update',
+                    function (data) {
+                        $('#outputSentence').html(data['sentence']);
+                    });
+        },1500);
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="container" style="margin-bottom: 25px;">
+        <span class="title-text">Sigua</span>
+        <span class="main-text" style="font-size: 22px;">
+          Live Sign Language Translator
+        </span>
+      </div>
+      <div>
+        <!-- 480x640 px frame -->
+        <img src="{% url 'streamVideo' %}">
+        <!-- <div style="background-color: rgb(0, 0, 0); width: 640px; height: 480"></div> -->
+      </div>
+      <div id="memoPad" class="container">
+          <span id="outputSentence" class="main-text">
+            
+          </span>
+      </div>
+      <div class="container" style="width: 640px;" >
+        <lu class="linkRow">
+          <li>
+            <a href="#">About</a>
+            <!-- Something about the site -->
+          </li>
+          <li>
+            <a href="https://github.com/lloyd-axe/Live-sign-language-translator-using-deep-learning" target="blank">Code</a>
+          </li>
+          <li>
+            <a href="https://github.com/lloyd-axe" target="blank">Author</a>
+          </li>
+        </lu>
+      </div>
+    </div>
+  </body>
+</html>

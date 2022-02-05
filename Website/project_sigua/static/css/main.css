@@ -1,0 +1,68 @@
+@font-face {
+    font-family: lobster;
+    src: url(../font/Lobster-Regular.ttf);
+}
+@font-face {
+    font-family: caveat;
+    src: url(../font/Caveat-VariableFont_wght.ttf);
+}
+
+.title-text{
+    font-family: lobster;
+    font-size: 70px;
+    margin: 10px;
+}
+.main-text{
+    font-family: caveat;
+    font-size: 28px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.linkRow{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style-type: none;
+    margin: 20px 0px 20px;
+    font-family: lobster;
+    font-size: 25px;
+}
+
+a{
+    text-decoration: none;
+    color:rgb(0, 0, 0);
+}
+
+#memoPad{
+    width: 640px;
+    max-height: 50px;
+    margin: 15px;
+    overflow: auto;
+}
+
+/* Srollbar */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(0, 0, 0);
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: rgb(82, 80, 80);
+}
