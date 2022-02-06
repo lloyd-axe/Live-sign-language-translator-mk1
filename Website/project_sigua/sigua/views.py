@@ -17,8 +17,6 @@ interval = 18
 sentenceVariable = Sentence
 #############################################
 
-
-
 def Home(request):
     return render(request, 'sigua.html')
 
