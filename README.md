@@ -1,5 +1,5 @@
-# Live American Sign Language (ASL) Translator
-Sign language is a form of manual communication that is commonly used by deaf people. This project is a beginner's attempt in demonstrating the use of deep learning in real life problems.
+# Live Sign Language Translator
+Sign language is a form of manual communication that is commonly used by deaf people. Technically, this is a live **hand-should gesture recognizer**. But, its main purpose is for translating sign language. This project is a beginner's attempt in demonstrating the use of deep learning in real life problems. 
 
 ## How it works
 Using the [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html) model, **134** keypoints are extracted from the person's **hands** and **shoulders**. This data is then used to train a basic model that can identify multiple gestures.
