@@ -4,7 +4,7 @@ Sign language is a form of manual communication that is commonly used by deaf pe
 ## How it works
 Using the [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html) model, **134** keypoints are extracted from the person's **hands** and **shoulders**. This data is then used to train a basic model that can identify multiple gestures.
 
-## Usage
+## How to Use
 
 ### Running 
 * When creating a new **ASLTranslator** instance, it is required to define the ***model*** and ***list of words*** that will be used. Sample _model.h5_ and _word_list.txt_ can be found in this repo.
