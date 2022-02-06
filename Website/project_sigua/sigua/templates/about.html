@@ -1,0 +1,33 @@
+{% load static %}
+<html>
+  <head>
+    <title>About Project Sigua</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Demo for Live Sign Language Translator project using deep learning">
+    <meta name="keywords" content="ASL, Sign Language, Neural Network, Deep Learning, Python, TensorFlow, MediaPipe">
+    <meta name="author" content="Lloyd Acha">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  </head>
+  <body>
+    <div class="container">
+        <div class="container" style="margin-bottom: 25px;">
+            <a href="{% url 'home' %}" class="main-text" style="font-size: 25px"><b>Home</b></a>
+            <span class="title-text">Word List</span>
+            <p class="main-text" style="font-size: 22px; width: 680px">
+                This site is made to demonstrate the capabilities of using deep learning for clarifications of human gestures.              
+            </p>
+            <p class="main-text" style="font-size: 22px; margin-bottom: 50px; width: 680px">
+                Below is the list of currenlty trained words<i>(gestures)</i> that can be translated by the application. 
+                You can train other words<i>(gestures)</i> using the module that can be found in this <a href="https://github.com/lloyd-axe/Live-sign-language-translator-using-deep-learning/tree/main/Code">
+                    <b><u>git repository</u></b></a>.
+            </p>
+            {% for word in words %}
+                <span class="main-text" style="font-size: 30px;">
+                    <b>{{word}}</b>
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+  </body>
+</html>

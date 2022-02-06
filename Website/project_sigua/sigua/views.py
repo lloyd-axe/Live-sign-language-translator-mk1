@@ -14,11 +14,38 @@ rightHand = False
 leftHand = False
 thres = 0.8
 interval = 18
+sentenceVariable = Sentence
 #############################################
 
-sentenceVariable = Sentence
+
+
+def Home(request):
+    return render(request, 'sigua.html')
+
+def Update(request):
+    return JsonResponse({'sentence': str(sentenceVariable.text)})
+
+def About(request):
+    with open(WORDLIST_PATH) as file:
+            words = [line.rstrip() for line in file]
+    return render(request, 'about.html', {'words': words})
+
+@gzip.gzip_page
+def StreamVideo(request):
+    try:
+        with open(WORDLIST_PATH) as file:
+            words = [line.rstrip() for line in file]
+        
+        aslt = WebASLTranslator(MODEL_PATH, words)
+        return StreamingHttpResponse(
+            gen(aslt), 
+            content_type="multipart/x-mixed-replace;boundary=frame")
+    except:
+        print('Error!')
+        return None
+
 #generate feed
-def gen(request, aslt):
+def gen(aslt):
     sentence, sequences = [], []
     frame_no = 0
     while True:
@@ -35,23 +62,5 @@ def gen(request, aslt):
         sentenceVariable.text = ' '.join(s for s in sentence)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-def update(request):
-    return JsonResponse({'sentence': str(sentenceVariable.text)})
-
-def Home(request):
-    #return HttpResponse(loader.get_template('sigua.html').render(RequestContext(request,{'test':t.test})))
-    return render(request, 'sigua.html')
-
-@gzip.gzip_page
-def StreamVideo(request):
-    with open(WORDLIST_PATH) as file:
-        words = [line.rstrip() for line in file]
-    
-    aslt = WebASLTranslator(MODEL_PATH, words)
-    #return render(request, 'sigua.html', {'test': "This is a test", 'stream': gen(aslt)})
-    return StreamingHttpResponse(
-        gen(request, aslt), 
-        content_type="multipart/x-mixed-replace;boundary=frame")
 
 
