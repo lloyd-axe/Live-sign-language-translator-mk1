@@ -31,6 +31,7 @@ model_name = 'new_model.h5'
 x_train, x_test, y_train, y_test = aslt.SplitData(sequences, labels)
 aslt.TrainModel(model, x_train, y_train, epochs = 100, model_name = model_name)
 ```
+You can check [tester.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Code/tester.py) for reference.
 ## Installation
 Installation is pretty straight forward. Clone the repo.
 ```git
