@@ -62,7 +62,7 @@ class ASLTranslator: #ASL Translator
         displayText = True, 
         textColor= (0,0,255), 
         fontSize = 1):
-        
+        print('Press Q to exit')
         sentence, sequences = [], []
         frame_no = 0
         
