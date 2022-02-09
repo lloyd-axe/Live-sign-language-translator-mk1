@@ -17,7 +17,7 @@ Using the [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holi
 * Use the ASLTranslator's **StartCapture** method to start video capture.
 
 ```python
-aslt = ASLTranslator(MODEL_PATH, word_ist)
+aslt = ASLTranslator(MODEL_PATH, word_list)
 aslt.StartCapture()
 ```
 ### Training
@@ -26,7 +26,7 @@ aslt.StartCapture()
 2. Start collecting data using the **CollectDataforWord** method. This method will automatically save the keypoints for each frame of a sample in the specified directory.
 3. You can use the **GetNpyDataFromPath** method to load those keypoints.
 ```python
-for word in word_ist:
+for word in word_list:
   aslt.CollectDataforWord(word, DATA_PATH, sampleCount = 10) #save keypoints data for each word in the list
 sequences, labels = aslt.GetNpyDataFromPath(DATA_PATH) #load keypoints data
 ```
