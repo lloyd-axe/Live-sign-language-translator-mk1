@@ -12,7 +12,7 @@ pose = False
 face = False
 rightHand = False
 leftHand = False
-thres = 0.8
+thres = 0.6
 interval = 18
 sentenceVariable = Sentence
 #############################################

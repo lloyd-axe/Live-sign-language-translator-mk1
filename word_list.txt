@@ -1,3 +1,6 @@
 hello
-iloveyou
+bye
+yes
+no
 thanks
+iloveyou
