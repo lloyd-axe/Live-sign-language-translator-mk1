@@ -6,6 +6,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 from Modules.MediaPipeHelper import Tracker
 
+'''
+This is just a web version of the ASLT module ;)
+'''
+
 class WebASLTranslator: #ASL Translator
     def __init__ (
         self, 
@@ -49,10 +53,10 @@ class WebASLTranslator: #ASL Translator
         frame, 
         sequences):
         results = self.tracker.Detect(frame)
-        keyPoints = self.tracker.GetKeypointsData(
+        keyPoints = self.tracker.get_keypoints(
                 results, 
-                noFace = True, 
-                posePoints = [11,0,12])
+                pose = True, 
+                pose_positions = [11,0,12])
         sequences.append(keyPoints)
         return sequences, results
 
@@ -82,8 +86,7 @@ class WebASLTranslator: #ASL Translator
         sentence, 
         sequences,
         interval,
-        threshold, 
-        draw):
+        threshold):
 
         sequences, results = self._getData(frame, sequences)
         sequences = sequences[1:] if len(sequences) > interval else sequences #limit sequences
@@ -117,8 +120,7 @@ class WebASLTranslator: #ASL Translator
             sentence, 
             sequences,
             interval,
-            threshold,
-            draw)
+            threshold)
 
         _, stream = cv.imencode('.jpg', self.frame)
 

@@ -39,7 +39,7 @@ def StreamVideo(request):
             gen(aslt), 
             content_type="multipart/x-mixed-replace;boundary=frame")
     except:
-        print('Error!')
+        print('Error! Make sure you have a model.h5 and word_list.txt in the static folder.')
         return None
 
 #generate feed
