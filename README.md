@@ -21,7 +21,7 @@ pip install -r requirements.txt
 Then, make sure you define both the model's and word list's paths when initializing the **ASLTranslator** object.
 To start live capture, use the **start_capture** method.
 ```python
-aslt = ASLTranslator(MODEL_PATH, word_list)
+aslt = ASLTranslator(MODEL_PATH, WORD_LIST_PATH)
 aslt.start_capture()
 ```
 
