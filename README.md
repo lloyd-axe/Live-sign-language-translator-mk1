@@ -52,7 +52,6 @@ aslt.train_model(model, train_data, val_data, plot = True, epochs = 100, model_n
 ```
 pip install -r requirements.txt
 ```
-3. Change **SECRET_KEY** in [settings.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Website/project_sigua/project_sigua/settings.py).
 4. Attach **model.h5** and **word_list.txt** files to **Website/project_sigua/static/** folder
 5. Run server.
 
