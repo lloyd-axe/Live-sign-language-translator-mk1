@@ -1,10 +1,10 @@
 # Live Sign Language Translator
-Sign language is a form of manual communication that is commonly used by deaf people. This project is a beginner's attempt in demonstrating the use of deep learning in real life problems. 
+Sign language is a form of manual communication that is commonly used by deaf people. This project is a beginner's attempt in demonstrating the use of deep learning for real world problems. 
 <br/>
 ![demo](https://user-images.githubusercontent.com/67902015/152925333-8fdfeab3-2218-4196-b091-82208350bdf6.gif)
 <br/>
 
-Technically, this module is a live **hand-shoulder gesture recognizer** because it can be trained to recognize different gestures. But, its main purpose is for translating sign language.
+This implementation is technically a live **hand-shoulder gesture recognizer** because it can be trained to recognize any gesture. But, its main purpose is for translating sign language.
 
 
 ## How it works
@@ -37,7 +37,7 @@ model_name = 'new_model.h5'
 x_train, x_test, y_train, y_test = aslt.SplitData(sequences, labels)
 aslt.TrainModel(model, x_train, y_train, epochs = 100, model_name = model_name)
 ```
-You can check [tester.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Code/tester.py) for reference.
+You can check [tester.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/tester.py) for reference.
 ## Installation
 Installation is pretty straight forward. Clone the repo.
 ```git
@@ -50,7 +50,8 @@ git clone https://github.com/lloyd-axe/Live-sign-language-translator
 pip install -r requirements.txt
 ```
 3. Change **SECRET_KEY** in [settings.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Website/project_sigua/project_sigua/settings.py).
-4. Run server.
+4. Attach **model.h5** and **word_list.txt** files to **Website/project_sigua/static/** folder
+5. Run server.
 
 ```
 python manage.py runserver
