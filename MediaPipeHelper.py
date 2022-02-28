@@ -1,29 +1,37 @@
 import cv2 as cv
 import numpy as np
 import mediapipe as mp
+'''
+------------------------------------------------------------
+This module contains methods that implements the commonly used
+task when using mediapipe.
+
+1. Dectection
+2. Key points collection
+3. Drawing
+------------------------------------------------------------
+'''
+
 
 class Tracker:
-    def __init__(
-        self, 
-        detectConf = 0.5, 
-        trackingConf = 0.5):
+    def __init__(self, 
+        detect_conf = 0.5, 
+        tracking_conf = 0.5):
         self.mp_drawing = mp.solutions.drawing_utils
         #Holistic
         self.mp_holistic = mp.solutions.holistic
         self.holistic_model = self.mp_holistic.Holistic(
-            min_detection_confidence = detectConf, 
-            min_tracking_confidence = trackingConf)
+            min_detection_confidence = detect_conf, 
+            min_tracking_confidence = tracking_conf)
         
     #Detection - returns mediapipe holistic model landmarks
-    def Detect( 
-        self, 
+    def Detect(self, 
         frame, 
         color = cv.COLOR_BGR2RGB):
         return self.holistic_model.process(cv.cvtColor(frame, color))
     
     #Reformat holistic model landmarks into a dictionary for easy access
-    def GetPositions(
-        self, 
+    def get_positions(self, 
         results):
         landmarks = {'pose': [], 'face': [], 'left': [], 'right': []}
         landmarks['pose'] = [[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark] if results.pose_landmarks else np.zeros((33,4))
@@ -33,18 +41,22 @@ class Tracker:
         return landmarks
     
     #Returns a flat array of specified keypoints from landmarks
-    def GetKeypointsData(self, results, noFace = False, noPose = False, posePoints = []):
-        landmarks = self.GetPositions(results)
-        if noFace:
+    def get_keypoints(self, 
+        results, 
+        face = False, 
+        pose = False, 
+        pose_positions = []):
+        landmarks = self.get_positions(results)
+        if not face:
             landmarks.pop('face')
-        if noPose:
+        if not pose:
             landmarks.pop('pose')
-        if posePoints != []:
-            landmarks['pose'] = [landmarks['pose'][p] for p in posePoints]
+        if pose_positions != []:
+            landmarks['pose'] = [landmarks['pose'][p] for p in pose_positions]
         return np.concatenate([np.array(part).flatten() for part in landmarks.values()])
     
     #VISUALS
-    def DrawLandmarks(
+    def draw_landmarks(
         self, 
         frame, 
         results,
@@ -108,7 +120,7 @@ class Tracker:
                 thickness = thickness[1], 
                 circle_radius = radius[1]))
             
-    def CheckPosition(
+    def check_position(
         self, 
         frame, 
         positions, 
