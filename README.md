@@ -8,48 +8,50 @@ This implementation is technically a live **hand-shoulder gesture recognizer** b
 
 
 ## How it works
-Using the [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html) model, **134** keypoints are extracted from the person's **hands** and **shoulders**. This data is then used to train a basic model that can identify multiple gestures. 
+Using the [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html) model, **138** keypoints are extracted from the person's **hands** and **shoulders**. This data is then used to train a basic model that can identify multiple gestures. 
 
 ## How to Use
+_For the complete implementation, you can check the [Test.ipynb](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Test.ipynb) notebook._
 
-### Running 
-* When creating a new **ASLTranslator** instance, it is required to define the ***model*** and ***list of words*** that will be used. Sample _model.h5_ and _word_list.txt_ can be found in this repo.
-* Use the ASLTranslator's **StartCapture** method to start video capture.
-
-```python
-aslt = ASLTranslator(MODEL_PATH, word_list)
-aslt.StartCapture()
-```
-### Training
-**ASLTranslator** can be trained to recognize multiple gestures and translate them on the go. Here are the steps for training new data:
-1. Create a folder where you want to save your data for training.
-2. Start collecting data using the **CollectDataforWord** method. This method will automatically save the keypoints for each frame of a sample in the specified directory.
-3. You can use the **GetNpyDataFromPath** method to load those keypoints.
-```python
-for word in word_list:
-  aslt.CollectDataforWord(word, DATA_PATH, sampleCount = 10) #save keypoints data for each word in the list
-sequences, labels = aslt.GetNpyDataFromPath(DATA_PATH) #load keypoints data
-```
-4. Create and train your new model using the following methods: **CreateModel, SplitData & TrainModel**.
-```python
-model = aslt.CreateModel()
-model_name = 'new_model.h5'
-x_train, x_test, y_train, y_test = aslt.SplitData(sequences, labels)
-aslt.TrainModel(model, x_train, y_train, epochs = 100, model_name = model_name)
-```
-You can check [tester.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/tester.py) for reference.
-## Installation
-Installation is pretty straight forward. Clone the repo.
-```git
-git clone https://github.com/lloyd-axe/Live-sign-language-translator
-```
-### Website Installation
-1. Open [Website](https://github.com/lloyd-axe/Live-sign-language-translator/tree/main/Website) folder.
-2. Install packages listed in its [requirements.txt](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Website/requirements.txt).
+First, you'll have to install all the required packages
 ```
 pip install -r requirements.txt
 ```
-3. Change **SECRET_KEY** in [settings.py](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Website/project_sigua/project_sigua/settings.py).
+
+Then, make sure you define both the model's and word list's paths when initializing the **ASLTranslator** object.
+To start live capture, use the **start_capture** method.
+```python
+aslt = ASLTranslator(MODEL_PATH, WORD_LIST_PATH)
+aslt.start_capture()
+```
+
+### Data Collection, Model Creation and Training using ASLTranslator
+You can collect fresh data by using the **collect_word_data** method.
+```python
+words = ['hello', 'yes', 'no']
+data_path = 'test_data'
+for word in words:
+    aslt.collect_word_data(word, data_path, samp_count = 5, frame_count = 10)
+```
+
+For model creation and training, you can use the **create_model** and **train_model** methods as shown below:
+```python
+with open(os.path.join(data_path, 'word_list.txt')) as file:
+    words = [line.rstrip() for line in file]
+model = aslt.create_model(len(words), interval = 10)
+x_train, x_test, x_val, y_train, y_test, y_val = aslt.split_data(sequences, labels)
+train_data = (x_train, y_train)
+val_data = (x_val, y_val)
+aslt.train_model(model, train_data, val_data, plot = True, epochs = 100, model_name='test_model.h5')
+```
+
+### Website Installation
+1. Open [Website](https://github.com/lloyd-axe/Live-sign-language-translator/tree/main/Website) folder.
+2. (Optional) Create a virtual environment.
+3. Install packages listed in its [requirements.txt](https://github.com/lloyd-axe/Live-sign-language-translator/blob/main/Website/requirements.txt).
+```
+pip install -r requirements.txt
+```
 4. Attach **model.h5** and **word_list.txt** files to **Website/project_sigua/static/** folder
 5. Run server.
 
